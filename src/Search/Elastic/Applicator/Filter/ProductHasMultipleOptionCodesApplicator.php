@@ -4,8 +4,9 @@ namespace Lakion\SyliusElasticSearchBundle\Search\Elastic\Applicator\Filter;
 
 use Lakion\SyliusElasticSearchBundle\Search\Criteria\Filtering\ProductHasOptionCodesFilter;
 use Lakion\SyliusElasticSearchBundle\Search\Elastic\Applicator\SearchCriteriaApplicator;
+use Lakion\SyliusElasticSearchBundle\Search\Elastic\Factory\Query\ProductHasOptionCodeQueryFactory;
 use Lakion\SyliusElasticSearchBundle\Search\Elastic\Factory\Query\QueryFactoryInterface;
-use ONGR\ElasticsearchDSL\Query\BoolQuery;
+use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Search;
 
 /**
@@ -14,7 +15,7 @@ use ONGR\ElasticsearchDSL\Search;
 final class ProductHasMultipleOptionCodesApplicator extends SearchCriteriaApplicator
 {
     /**
-     * @var QueryFactoryInterface
+     * @var ProductHasOptionCodeQueryFactory
      */
     private $productHasOptionCodeQueryFactory;
 
@@ -32,11 +33,11 @@ final class ProductHasMultipleOptionCodesApplicator extends SearchCriteriaApplic
      */
     public function applyProductHasOptionCodesFilter(ProductHasOptionCodesFilter $codesFilter, Search $search)
     {
-        foreach ($codesFilter->getCodes() as $code) {
-            $search->addFilter(
-                $this->productHasOptionCodeQueryFactory->create(['option_value_code' => $code]),
-                BoolQuery::SHOULD
-            );
-        }
+        $search->addFilter(
+            $this->productHasOptionCodeQueryFactory->create([
+                'option_value_code' => $codesFilter->getCodes()
+            ]),
+            BoolQuery::MUST
+        );
     }
 }

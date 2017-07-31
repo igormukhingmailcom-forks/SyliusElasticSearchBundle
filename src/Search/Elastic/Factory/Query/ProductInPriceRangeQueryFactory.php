@@ -3,8 +3,8 @@
 namespace Lakion\SyliusElasticSearchBundle\Search\Elastic\Factory\Query;
 
 use Lakion\SyliusElasticSearchBundle\Exception\MissingQueryParameterException;
-use ONGR\ElasticsearchDSL\Query\NestedQuery;
-use ONGR\ElasticsearchDSL\Query\RangeQuery;
+use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 
 /**
  * @author Arkadiusz Krakowiak <arkadiusz.krakowiak@lakion.com>
@@ -25,7 +25,10 @@ final class ProductInPriceRangeQueryFactory implements QueryFactoryInterface
             'variants',
             new NestedQuery(
                 'variants.channelPricings',
-                new RangeQuery('variants.channelPricings.price', ['gte' => $graterThan, 'lte' => $lessThan])
+                new RangeQuery('variants.channelPricings.price', [
+                    'gte' => $graterThan,
+                    'lte' => $lessThan
+                ])
             )
         );
     }

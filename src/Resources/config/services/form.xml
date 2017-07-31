@@ -16,6 +16,15 @@
             <tag name="form.type" />
         </service>
 
+        <service id="lakion_sylius_elastic_search.form_type.attribute_value_filter" class="Lakion\SyliusElasticSearchBundle\Form\Type\AttributeValueFilterType">
+            <argument type="service" id="fos_elastica.manager.orm" />
+            <argument type="service" id="lakion_sylius_elastic_search.query_factory.product_has_attribute_value" />
+            <argument type="service" id="lakion_sylius_elastic_search.factory.search" />
+            <argument>%sylius.model.product.class%</argument>
+            <tag name="form.type" />
+            <tag name="filter.type" type="attribute" />
+        </service>
+
         <service id="lakion_sylius_elastic_search.form_type.option_code_filter" class="Lakion\SyliusElasticSearchBundle\Form\Type\OptionCodeFilterType">
             <argument type="service" id="fos_elastica.manager.orm" />
             <argument type="service" id="lakion_sylius_elastic_search.query_factory.product_has_option_code" />
@@ -24,6 +33,7 @@
             <tag name="form.type" />
             <tag name="filter.type" type="option" />
         </service>
+
         <service id="lakion_sylius_elastic_search.form_type.search" class="Lakion\SyliusElasticSearchBundle\Form\Type\SearchType">
             <tag name="form.type" />
             <tag name="filter.type" type="search" />

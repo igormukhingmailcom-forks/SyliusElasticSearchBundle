@@ -70,4 +70,8 @@ Elastic search for Sylius.
                             code: mug_type
                     product_price:
                         type: price
+                    product_brand:
+                        type: attribute
+                        options:
+                            attribute_code: brand
     ```

@@ -5,6 +5,10 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="lakion_sylius_elastic_search.search_criteria_applicator.product_has_multiple_attribute_value" class="Lakion\SyliusElasticSearchBundle\Search\Elastic\Applicator\Filter\ProductHasMultipleAttributeValuesApplicator">
+            <argument type="service" id="lakion_sylius_elastic_search.query_factory.product_has_attribute_value" />
+            <tag name="search_criteria_applicator" applies="Lakion\SyliusElasticSearchBundle\Search\Criteria\Filtering\ProductHasAttributeValuesFilter" />
+        </service>
         <service id="lakion_sylius_elastic_search.search_criteria_applicator.product_has_multiple_option_codes" class="Lakion\SyliusElasticSearchBundle\Search\Elastic\Applicator\Filter\ProductHasMultipleOptionCodesApplicator">
             <argument type="service" id="lakion_sylius_elastic_search.query_factory.product_has_option_code" />
             <tag name="search_criteria_applicator" applies="Lakion\SyliusElasticSearchBundle\Search\Criteria\Filtering\ProductHasOptionCodesFilter" />

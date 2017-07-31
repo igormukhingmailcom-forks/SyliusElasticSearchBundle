@@ -13,6 +13,7 @@ namespace Lakion\SyliusElasticSearchBundle\Form\Type;
 
 use Lakion\SyliusElasticSearchBundle\Search\Criteria\Filtering\ProductInPriceRangeFilter;
 use Sylius\Bundle\MoneyBundle\Form\Type\MoneyType;
+use Sylius\Component\Product\Model\ProductAttributeValue;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -53,10 +54,9 @@ final class ProductPriceRangeFilterType extends AbstractType implements DataTran
      */
     public function reverseTransform($value)
     {
-        if (null === $value['grater_than'] || null === $value['less_than']) {
-            return null;
-        }
-
-        return new ProductInPriceRangeFilter($value['grater_than'], $value['less_than']);
+        return new ProductInPriceRangeFilter(
+            $value['grater_than'] ?: 0,
+            $value['less_than'] ?: 99999999
+        );
     }
 }

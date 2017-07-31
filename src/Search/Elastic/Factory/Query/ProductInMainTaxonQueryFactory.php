@@ -3,7 +3,7 @@
 namespace Lakion\SyliusElasticSearchBundle\Search\Elastic\Factory\Query;
 
 use Lakion\SyliusElasticSearchBundle\Exception\MissingQueryParameterException;
-use ONGR\ElasticsearchDSL\Query\TermQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 
 /**
  * @author Arkadiusz Krakowiak <arkadiusz.krakowiak@lakion.com>
