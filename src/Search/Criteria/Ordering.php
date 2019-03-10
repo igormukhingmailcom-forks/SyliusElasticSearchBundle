@@ -1,35 +1,26 @@
 <?php
 
 namespace Lakion\SyliusElasticSearchBundle\Search\Criteria;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-/**
- * @author Arkadiusz Krakowiak <arkadiusz.krakowiak@lakion.com>
- */
 final class Ordering
 {
-    const DEFAULT_FIELD = 'name';
-    const DEFAULT_DIRECTION = self::ASCENDING_DIRECTION;
+    const DEFAULT_DIRECTION = self::DESCENDING_DIRECTION;
     const ASCENDING_DIRECTION = 'asc';
     const DESCENDING_DIRECTION = 'desc';
 
     /**
      * @var string
      */
-    private $field;
+    private $sortFields;
 
     /**
-     * @var string
+     * Ordering constructor.
+     * @param $sortFields
      */
-    private $direction;
-
-    /**
-     * @param string $field
-     * @param string $direction
-     */
-    private function __construct($field, $direction)
+    private function __construct($sortFields)
     {
-        $this->field = $field;
-        $this->direction = $direction;
+        $this->sortFields = $sortFields;
     }
 
     /**
@@ -39,30 +30,33 @@ final class Ordering
      */
     public static function fromQueryParameters(array $parameters)
     {
-        $field = isset($parameters['sort']) ? $parameters['sort'] : self::DEFAULT_FIELD;
-        $direction = self::DEFAULT_DIRECTION;
+        $sortFields = [
+            'prettyRank' => self::DEFAULT_DIRECTION,
+        ];
 
-        if ('-' === $field[0]) {
-            $direction = self::DESCENDING_DIRECTION;
-            $field = trim($field, '-');
+        if (isset($parameters['sort'])) {
+            $sortFields = $parameters['sort'];
         }
 
-        return new self($field, $direction);
+        foreach ($sortFields as $sortField=>$sortDirection) {
+            if (!in_array($sortDirection, [self::ASCENDING_DIRECTION, self::DESCENDING_DIRECTION])) {
+                throw new BadRequestHttpException(sprintf(
+                    'Unexpected sort order %s for field %s. Expecting one of %s',
+                    $sortDirection,
+                    $sortField,
+                    join(',', [self::ASCENDING_DIRECTION, self::DESCENDING_DIRECTION])
+                ));
+            }
+        }
+
+        return new self($sortFields);
     }
 
     /**
      * @return string
      */
-    public function getField()
+    public function getSortFields()
     {
-        return $this->field;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDirection()
-    {
-        return $this->direction;
+        return $this->sortFields;
     }
 }

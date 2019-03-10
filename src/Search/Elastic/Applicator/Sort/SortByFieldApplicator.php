@@ -32,6 +32,9 @@ final class SortByFieldApplicator extends SearchCriteriaApplicator
      */
     public function applyOrdering(Ordering $ordering, Search $search)
     {
-        $search->addSort($this->sortByFieldQueryFactory->create($ordering));
+        $queries = $this->sortByFieldQueryFactory->create($ordering);
+        foreach ($queries as $query) {
+            $search->addSort($query);
+        }
     }
 }
